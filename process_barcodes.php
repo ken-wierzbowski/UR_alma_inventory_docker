@@ -66,7 +66,7 @@ $tempProblem = '';
 $libraryProblem = '';
 $locationProblem = '';
 //$policyProblem = '';
-$typeProblem = '';
+//$typeProblem = '';
 $orderProblemCount = 0;
 $cnTypeProblemCount = 0;
 $tempProblemCount = 0;
@@ -74,7 +74,7 @@ $requestProblemCount = 0;
 $locationProblemCount = 0;
 $libraryProblemCount = 0;
 //$policyProblemCount = 0;
-$typeProblemCount = 0;
+//$typeProblemCount = 0;
 
 //Only run code below if form submitted
 if (isset($_POST['submit'])) {
@@ -386,7 +386,8 @@ if (isset($_POST['submit'])) {
                 } else {
                    $policyProblem = '';
                 }
- */
+*/
+/*
                 $type = $_POST['itemType'];
                 if ($sortednk[$key]['physical_material_type'] != $type) {
                     if ($sortednk[$key]['physical_material_type'] != '') {
@@ -401,7 +402,7 @@ if (isset($_POST['submit'])) {
                     $typeProblem = '';
                 }
             }
-
+*/
             $scan_loc = $sortednk[$key]['scan_loc'];
             $correct_loc = $key + 1;
 
@@ -413,8 +414,8 @@ if (isset($_POST['submit'])) {
             $shelflist_obj->norm_call_number = $sortednk[$key]['call_sort'];
             $shelflist_obj->title = utf8_encode (substr($sortednk[$key]['title'], 0, 20) . '...');
             $shelflist_obj->scanned_location = $scan_loc;
-            $shelflist_obj->problem_list = $orderProblem . $cnTypeProblem . $nipProblem . $tempProblem . $libraryProblem . $locationProblem . $typeProblem;
-          // Removed $policyProblem from above line  
+            $shelflist_obj->problem_list = $orderProblem . $cnTypeProblem . $nipProblem . $tempProblem . $libraryProblem . $locationProblem;
+          // Removed $policyProblem, $typeProblem from above line  
 	    $shelflist_obj->barcode = $sortednk[$key]['item_barcode'];
             $shelflist_obj->problem = $problem;
           	//Add this loation to the array of locations using the unique location code as the index value
