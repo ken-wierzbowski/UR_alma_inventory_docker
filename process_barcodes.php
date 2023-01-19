@@ -65,7 +65,7 @@ $nipProblem = '';
 $tempProblem = '';
 $libraryProblem = '';
 $locationProblem = '';
-$policyProblem = '';
+//$policyProblem = '';
 $typeProblem = '';
 $orderProblemCount = 0;
 $cnTypeProblemCount = 0;
@@ -73,7 +73,7 @@ $tempProblemCount = 0;
 $requestProblemCount = 0;
 $locationProblemCount = 0;
 $libraryProblemCount = 0;
-$policyProblemCount = 0;
+//$policyProblemCount = 0;
 $typeProblemCount = 0;
 
 //Only run code below if form submitted
@@ -373,7 +373,7 @@ if (isset($_POST['submit'])) {
                     $libraryProblem = '';
                 }
 
-                $policy = $_POST['policy'];
+  /*              $policy = $_POST['policy'];
                 if ($sortednk[$key]['policy'] != $policy) {
                     if ($sortednk[$key]['policy'] != '') {
                         $policyProblem = "**WRONG ITEM POLICY: " . $sortednk[$key]['policy'] . "**<BR>";
@@ -384,9 +384,9 @@ if (isset($_POST['submit'])) {
                     }
                     $problem = true;
                 } else {
-                    $policyProblem = '';
+                   $policyProblem = '';
                 }
-
+ */
                 $type = $_POST['itemType'];
                 if ($sortednk[$key]['physical_material_type'] != $type) {
                     if ($sortednk[$key]['physical_material_type'] != '') {
@@ -413,8 +413,9 @@ if (isset($_POST['submit'])) {
             $shelflist_obj->norm_call_number = $sortednk[$key]['call_sort'];
             $shelflist_obj->title = utf8_encode (substr($sortednk[$key]['title'], 0, 20) . '...');
             $shelflist_obj->scanned_location = $scan_loc;
-            $shelflist_obj->problem_list = $orderProblem . $cnTypeProblem . $nipProblem . $tempProblem . $libraryProblem . $locationProblem . $policyProblem . $typeProblem;
-            $shelflist_obj->barcode = $sortednk[$key]['item_barcode'];
+            $shelflist_obj->problem_list = $orderProblem . $cnTypeProblem . $nipProblem . $tempProblem . $libraryProblem . $locationProblem . $typeProblem;
+          // Removed $policyProblem from above line  
+	    $shelflist_obj->barcode = $sortednk[$key]['item_barcode'];
             $shelflist_obj->problem = $problem;
           	//Add this loation to the array of locations using the unique location code as the index value
             //This converts stdClass objects to an
@@ -444,7 +445,7 @@ if (isset($_POST['submit'])) {
         echo '<td>' . $requestProblemCount . '</b> Item on Request Problems Found</td></tr>';
         echo '<tr><td>' . $locationProblemCount . '</b> Wrong Location Problems Found</td>';
         echo '<td>' . $libraryProblemCount . '</b> Wrong Library Problems Found</td>';
-        echo '<td>' . $policyProblemCount . '</b> Item Policy Problems Found</td>';
+        //echo '<td>' . $policyProblemCount . '</b> Item Policy Problems Found</td>';
         echo '<td>' . $typeProblemCount . '</b> Item Type Problems Found</td></tr>';
         echo '<tr><td>First call number scanned: <B>' . $first_call . '</b></td>';
         echo '<td>Last call number scanned: <B>' . $last_call . '</b></td></tr></table>';
