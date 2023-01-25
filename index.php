@@ -140,22 +140,6 @@ require("key.php");
     }
     <!-- end location lookup Ajax js -->
 
-	function checkboxToggle(){
-    var na = document.getElementById("na");
-    var onlyorder= document.getElementById("onlyorder");
-    var onlyother = document.getElementById("onlyother");
-    if(na.checked){
-      onlyorder.checked = false;
-      onlyother.checked = false;
-    }else if(onlyorder.checked){
-	  na.checked = false;
-	  onlyother.checked = false;
-     }else if(onlyother.checked){
-      na.checked = false;
-	  onlyorder.checked = false;	  
-    }
-}
-
 </script>
 
 <script type="text/javascript">
