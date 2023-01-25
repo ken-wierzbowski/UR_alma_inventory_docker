@@ -32,6 +32,7 @@ require("key.php");
   <link rel="stylesheet" href="reformed/css/uniform.aristo.css" type="text/css" />
   <link rel="stylesheet" href="reformed/css/ui.reformed.css" type="text/css" />
   <link rel="stylesheet" href="reformed/css/jquery-ui-1.8.7.custom.css" type="text/css" />
+  <link rel="stylesheet" href="reformed/css/ur-custom.css" type="text/css" />
   <!-- end necessary reformed CSS -->
 
   <!--
@@ -75,6 +76,8 @@ require("key.php");
   <!-- end necessary reformed js -->
     <!-- start lookup Ajax js -->
   <script type="text/javascript">
+  
+
   function AjaxFunction()
   {
   var httpxml;
@@ -136,12 +139,56 @@ require("key.php");
   httpxml.send(null);
     }
     <!-- end location lookup Ajax js -->
+
+	function checkboxToggle(){
+    var na = document.getElementById("na");
+    var onlyorder= document.getElementById("onlyorder");
+    var onlyother = document.getElementById("onlyother");
+    if(na.checked){
+      onlyorder.checked = false;
+      onlyother.checked = false;
+    }else if(onlyorder.checked){
+	  na.checked = false;
+	  onlyother.checked = false;
+     }else if(onlyother.checked){
+      na.checked = false;
+	  onlyorder.checked = false;	  
+    }
+}
+
+</script>
+
+<script type="text/javascript">
+
+function checkboxer1(){
+
+	document.querySelector("#uniform-onlyOrder1 > span").className = "checked";
+	document.querySelector("#uniform-onlyOrder2 > span").className = "";
+	document.querySelector("#uniform-onlyOrder3 > span").className = "";
+
+}
+
+function checkboxer2(){
+
+	document.querySelector("#uniform-onlyOrder2 > span").className = "checked";
+	document.querySelector("#uniform-onlyOrder1 > span").className = "";
+	document.querySelector("#uniform-onlyOrder3 > span").className = "";
+}
+
+function checkboxer3(){
+
+	document.querySelector("#uniform-onlyOrder3 > span").className = "checked";
+	document.querySelector("#uniform-onlyOrder1 > span").className = "";
+	document.querySelector("#uniform-onlyOrder2 > span").className = "";
+}
+
+
 </script>
 
   <!-- The following style code is NOT necessary; just some styling to center the form on the page and set the default font size -->
-  <style type="text/css">
+<style type="text/css">
   	body { font: 12px/14px Arial;}
-  	div.reformed-form { width: 550px; margin: 5px auto;}
+  	div.reformed-form { width: 90%; margin: 5px auto;}
 
 
 
@@ -156,7 +203,7 @@ import url(http://fonts.googleapis.com/css?family=Expletus+Sans);
 
 body {
 margin: 50px auto 0;
-max-width: 800px;
+max-width: 100%;
 
 font-family: "Expletus Sans", sans-serif;
 }
@@ -185,9 +232,14 @@ h2 {
   <body>
 
     <div class="reformed-form">
-      <h1>Inventory Report <small>Fill in form and submit</small></h1>
-    	<form method="post" name="ShelfLister" id="ShelfLister" action="<?php echo 'http://' . $_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']) . 'process_barcodes.php'; ?>" enctype="multipart/form-data">
-    		<dl>
+      	<div style="text-align: center; padding-bottom: 10px;">
+	  	<h1 style="color: white;">UR Libraries - Inventory Tool</h1>
+		</div>
+
+	<div id="main-form">	
+		<form style="margin: 0 auto;" method="post" name="ShelfLister" id="ShelfLister" action="<?php echo 'http://' . $_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']) . 'process_barcodes.php'; ?>" enctype="multipart/form-data">
+    	<div class="form-col">
+			<dl>
     			<dt>
     				<label for="flie">Barcode XLSX FIle:</label>
     			</dt>
@@ -195,25 +247,21 @@ h2 {
     		</dl>
     		<dl>
     			<dt>
-    				<label for="cnType">Call Number<BR> Type</label>
+    				<label for="cnType">Call Number Type:</label>
     			</dt>
     			<dd>
-    				<ul>
-    					<li><input type="radio" class="required" id="cnType" name="cnType" value="lc" checked="checked" />
-    						<label>LC</label>
-    					</li>
-    					<li><input type="radio" class="required" id="cnType" name="cnType" value="dewey" />
-    						<label>Dewey</label>
-    					</li>
-    					<li><input type="radio" class="required" id="cnType" name="cnType" value="other" />
-    						<label>Other</label>
-    					</li>
-    				</ul>
-    						</dd>
+				<label>LC</label><input type="radio" class="required" id="cnType" name="cnType" value="lc" checked="checked" />
+    				<br/><br/>
+				<label>Dewey</label><input type="radio" class="required" id="cnType" name="cnType" value="dewey" />
+					<br/><br/>
+				<label>Other</label><input type="radio" class="required" id="cnType" name="cnType" value="other" />
+    						
+
+				</dd>
     		</dl>
     		<dl>
     			<dt>
-    				<label for="library">Library</label>
+    				<label for="library">Library:</label>
     			</dt>
     			<dd>
     				<select size="1" name="library" id="library" class="required"  onchange=AjaxFunction();>
@@ -240,14 +288,14 @@ echo "<option value=$library->code>$library->name</option>";
     		</dl>
     		<dl>
     			<dt>
-    				<label for="location">Scan Location</label>
+    				<label for="location">Scan Location:</label>
     			</dt>
     			<dd>
     				<select size="1" name="location" id="location" class="required">
     				</select>
     			</dd>
     		</dl>
-    		<dl>
+<!--   		<dl>
     			<dt>
     				<label for="itemType">Primary Item<BR> Type for Scanned Location</label>
     			</dt>
@@ -274,70 +322,96 @@ echo "<option value=$library->code>$library->name</option>";
     				</select>
     			</dd>
     		</dl>
+-->			
+</div>    
+
+	<div class="form-col"> 
+
+
         <dl>
+			<dt>
+				<label for="cnType">Select Report Options:</label>
+			</dt>
+
+		
+			<dd>
+				<input type="hidden" id="onlyOrder" name="onlyother" value="false" />
+				<input type="hidden" id="onlyOrder" name="onlyorder" value="false" />
+				<label>Display All Problems</label><input type="checkbox" id="onlyOrder" name="onlyorder" value="false" onclick="checkboxer1()" /><br/><br/>
+				<label>Display Only Order Problems</label><input type="checkbox" id="onlyOrder" name="onlyorder" value="true" onclick="checkboxer2()" /><br/><br/>
+				<label>Display Only Non-Order Problems</label><input type="checkbox" id="onlyOrder" name="onlyother" value="true" onclick="checkboxer3()" /><br/><br/>
+				
+			</dd>
+
+	
+		</dl>
+<!--
+		<dl>
     			<dt>
-    				<label for="cnType">Only Report<BR>CN Order Problems?</label>
+    				<label for="cnType">Report ONLY call number order problems?</label>
     			</dt>
     			<dd>
-    				<ul>
-    					<li><input type="radio" class="required" id="onlyOrder" name="onlyorder" value="false" checked="checked" />
-    						<label>No</label>
-    					</li>
-    					<li><input type="radio" class="required" id="onlyOrder" name="onlyorder" value="true" />
+    				<input type="radio" class="required" id="onlyOrder" name="onlyorder" value="false" checked="checked" />
+    						<label>No</label></br></br>
+    					   <input type="radio" class="required" id="onlyOrder" name="onlyorder" value="true" />
     						<label>Yes</label>
-    					</li>
-    				</ul>
+
     						</dd>
     		</dl>
         <dl>
     			<dt>
-    				<label for="cnType">Only Report<BR>Problems Other Than CN?</label>
+    				<label for="cnType">Report ONLY non-call number problems?</label>
     			</dt>
     			<dd>
-    				<ul>
-    					<li><input type="radio" class="required" id="onlyOrder" name="onlyother" value="false" checked="checked" />
-    						<label>No</label>
-    					</li>
-    					<li><input type="radio" class="required" id="onlyOrder" name="onlyother" value="true" />
+    				<input type="radio" class="required" id="onlyOrder" name="onlyother" value="false" checked="checked" />
+    						<label>No</label></br></br>
+    					    <input type="radio" class="required" id="onlyOrder" name="onlyother" value="true" />
     						<label>Yes</label>
-    					</li>
-    				</ul>
+  
     						</dd>
     		</dl>
-        <dl>
-    			<dt>
-    				<label for="cnType">Report Only<BR> Problems?</label>
-    			</dt>
-    			<dd>
-    				<ul>
-    					<li><input type="radio" class="required" id="onlyProblems" name="onlyproblems" value="false" checked="checked" />
-    						<label>No</label>
-    					</li>
-    					<li><input type="radio" class="required" id="onlyProblems" name="onlyproblems" value="true" />
-    						<label>Yes</label>
-    					</li>
-    				</ul>
-    						</dd>
-    		</dl>
+-->
+		<dl>
+			<dt>
+				<label for="cnType">Display in context of full-shelf list?</label>
+			</dt>
+				
+			<dd>
+			
+			<input type="radio" class="required" id="onlyProblems" name="onlyproblems" value="false" checked="checked" />
+				<label for="onlyProblems">Yes</label><br/><br/>
+			<input type="radio" class="required" id="onlyProblems" name="onlyproblems" value="true" />
+				<label for="onlyProblems">No</label>
+			
+			</dd>
+		
+		</dl>
+			
+
 			<dl>
     			<dt>
     				<label for="cnType">Clear Cache?</label>
     			</dt>
     			<dd>
-    				<ul>
-    					<li><input type="radio" class="required" id="clearCache" name="clearCache" value="false" checked="checked" />
+    		<input type="radio" class="required" id="clearCache" name="clearCache" value="false" checked="checked" />
     						<label>No</label>
-    					</li>
-    					<li><input type="radio" class="required" id="clearCache" name="clearCache" value="true" />
+							<br/><br/>
+							<input type="radio" class="required" id="clearCache" name="clearCache" value="true" />
     						<label>Yes</label>
-    					</li>
-    				</ul>
+ 
     						</dd>
-    		</dl>
+    		</dl> 
+
+
+
+		
     		<div id="submit_buttons">
     			<input type="submit" name="submit"/>
     		</div>
-    		</form>
-    </div>
+    		
+</div>
+
+</div>
+</form>
   </body>
 </html>
