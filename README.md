@@ -1,7 +1,7 @@
 # UR alma_inventory_docker
 
-#Customized version of the Alma inventory docker for the University of Rochester River Campus Libraries. Main changes are to form styling, labels, and modification of which errors are reported and displayed.
-
+# Customized version of the Alma inventory docker for the University of Rochester River Campus Libraries. Main changes are to form styling, labels, and modification of which errors are reported and displayed.
+----------------------------------------------------------------------------------------------
 Alma Inventory API setup which can be launched using docker on Mac, Linux or Windows.
 The details of this application and how to run it can be found here: https://developers.exlibrisgroup.com/blog/Shelf-Inventory-using-Alma-APIs
 
