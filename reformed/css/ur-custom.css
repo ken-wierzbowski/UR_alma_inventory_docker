@@ -1,0 +1,48 @@
+.form-col {
+    width: 50%;
+    float: left;
+}
+
+.form-col label {
+    display: inline;
+    padding: 4px 11px;
+    cursor: pointer;
+  }
+
+.form-col dd {
+    padding-bottom: 35px;
+}
+
+div#submit_buttons {
+    margin-left: 0px !important;
+}
+
+div#main-form {
+    background-color: white;
+    text-align: center;
+    margin: auto;
+    width: 60%;
+    padding: 10px;
+    height: 800px;
+}
+
+
+#submit_buttons input.ui-button.ui-widget.ui-state-default.ui-corner-all {
+    
+    border: none;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    font-size: 1.5em;
+
+}
+
+
+body {
+    background: rgb(8,65,92) !important;
+    }
+
