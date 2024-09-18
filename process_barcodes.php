@@ -76,6 +76,77 @@ $libraryProblemCount = 0;
 //$policyProblemCount = 0;
 //$typeProblemCount = 0;
 
+function outputRecords($output){
+  //Use global to allow use inside of function
+  global $csv_output_filename;
+  // check if cached barcodeOutput file exists and delete if needed
+  if (file_exists("cache/output/" . $csv_output_filename)) {
+      unlink("cache/output/" . $csv_output_filename);
+
+      if (isset($_GET['debug'])) {
+          print("cache file deleted");
+      }
+  }
+
+// open the csv file for writing
+
+  $csv_file = fopen('cache/output/' . $csv_output_filename, 'w');
+
+// save the CSV column headers
+  fputcsv($csv_file, array('Correct_Position', 'Call_Number', 'norm_call_number','Title', 'Position Scanned', 'Problem', 'Barcode'));
+
+  echo "<table id='CNTable' style='width: auto;' class='table table-hover table-striped table-bordered table-condensed tablesorter'>";
+  echo "<thead>";
+  echo "<tr>";
+  echo "<th>Correct<BR>Order</th>";
+  echo "<th>Correct CN Order</th>";
+  //  echo "<th>Norm CN Order</th>";
+  echo "<th>Title</th>";
+  echo "<th>Where<BR>Scanned</th>";
+  echo "<th>Problem</th>";
+  echo "<th>Barcode</th>";
+  echo "</tr>";
+  echo "</thead>";
+  echo "<tbody>";
+  foreach ($output as $key => $number) {
+    //Don't print non-problems if only problems are requested
+    if ($_POST['onlyproblems'] == 'true' && $output[$key]['problem'] != 1) {
+    continue;
+    }
+    //Highlight problem rows using bootstrap contextual class
+  if ($output[$key]['problem'] == 1) {
+    echo "<tr class='danger' style='font-weight:bold'>";
+  }
+  else {
+    echo "<tr>";
+  }
+
+
+          echo "<td>" . $output[$key]['correct_location'] . "</td>";
+          echo "<td>" . $output[$key]['call_number'] . "</td>";
+          //          echo "<td>" . $output[$key]['norm_call_number'] . "</td>";
+          echo "<td>" . $output[$key]['title'] . "</td>";
+          echo "<td>" . $output[$key]['scanned_location']  . "</td>";
+          echo "<td>" . $output[$key]['problem_list'] . "</td>";
+          echo "<td>" . $output[$key]['barcode']   . "</td>";
+          echo "</tr>";
+          //output to csv
+          //remove <BR's> from csv output
+          $problems = preg_replace('#(<br */?>\s*)+#i', '', $output[$key]['problem_list'] );
+          //remove <em's> from csv output
+          $problems = preg_replace('#(<em */?>\s*)+#i', '', $problems);
+          $problems = preg_replace('#(</em */?>\s*)+#i', '', $problems);
+          fputcsv($csv_file, array($output[$key]['correct_location'], $output[$key]['call_number'], $output[$key]['norm_call_number'], $output[$key]['title'], $output[$key]['scanned_location'],$problems,"=\"" . $output[$key]['barcode'] ."\"" ));
+
+  }
+  echo "</tbody>";
+  echo "</table>";
+  // Close the output CSV file
+      fclose($csv_file);
+    }
+
+
+
 //Only run code below if form submitted
 if (isset($_POST['submit'])) {
   //View Post Data Submitted
@@ -465,73 +536,6 @@ function pre($data) {
     print '<pre>' . print_r($data, true) . '</pre>';
 }
 
-function outputRecords($output){
-  //Use global to allow use inside of function
-  global $csv_output_filename;
-  // check if cached barcodeOutput file exists and delete if needed
-  if (file_exists("cache/output/" . $csv_output_filename)) {
-      unlink("cache/output/" . $csv_output_filename);
-
-      if (isset($_GET['debug'])) {
-          print("cache file deleted");
-      }
-  }
-
-// open the csv file for writing
-
-  $csv_file = fopen('cache/output/' . $csv_output_filename, 'w');
-
-// save the CSV column headers
-  fputcsv($csv_file, array('Correct_Position', 'Call_Number', 'norm_call_number','Title', 'Position Scanned', 'Problem', 'Barcode'));
-
-  echo "<table id='CNTable' style='width: auto;' class='table table-hover table-striped table-bordered table-condensed tablesorter'>";
-  echo "<thead>";
-  echo "<tr>";
-  echo "<th>Correct<BR>Order</th>";
-  echo "<th>Correct CN Order</th>";
-  //  echo "<th>Norm CN Order</th>";
-  echo "<th>Title</th>";
-  echo "<th>Where<BR>Scanned</th>";
-  echo "<th>Problem</th>";
-  echo "<th>Barcode</th>";
-  echo "</tr>";
-  echo "</thead>";
-  echo "<tbody>";
-  foreach ($output as $key => $number) {
-    //Don't print non-problems if only problems are requested
-    if ($_POST['onlyproblems'] == 'true' && $output[$key]['problem'] != 1) {
-    continue;
-    }
-    //Highlight problem rows using bootstrap contextual class
-  if ($output[$key]['problem'] == 1) {
-    echo "<tr class='danger' style='font-weight:bold'>";
-  }
-  else {
-    echo "<tr>";
-  }
-
-
-          echo "<td>" . $output[$key]['correct_location'] . "</td>";
-          echo "<td>" . $output[$key]['call_number'] . "</td>";
-          //          echo "<td>" . $output[$key]['norm_call_number'] . "</td>";
-          echo "<td>" . $output[$key]['title'] . "</td>";
-          echo "<td>" . $output[$key]['scanned_location']  . "</td>";
-          echo "<td>" . $output[$key]['problem_list'] . "</td>";
-          echo "<td>" . $output[$key]['barcode']   . "</td>";
-          echo "</tr>";
-          //output to csv
-          //remove <BR's> from csv output
-          $problems = preg_replace('#(<br */?>\s*)+#i', '', $output[$key]['problem_list'] );
-          //remove <em's> from csv output
-          $problems = preg_replace('#(<em */?>\s*)+#i', '', $problems);
-          $problems = preg_replace('#(</em */?>\s*)+#i', '', $problems);
-          fputcsv($csv_file, array($output[$key]['correct_location'], $output[$key]['call_number'], $output[$key]['norm_call_number'], $output[$key]['title'], $output[$key]['scanned_location'],$problems,"=\"" . $output[$key]['barcode'] ."\"" ));
-
-  }
-  echo "</tbody>";
-  echo "</table>";
-  // Close the output CSV file
-      fclose($csv_file);
 }
 ?>
 </div> <!-- /container -->
